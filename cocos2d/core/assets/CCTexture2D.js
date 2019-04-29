@@ -435,7 +435,7 @@ var Texture2D = cc.Class({
      * Init with HTML element.
      * !#zh 用 HTML Image 或 Canvas 对象初始化贴图。
      * @method initWithElement
-     * @param {HTMLImageElement|HTMLCanvasElement} element
+     * @param {HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} element
      * @example
      * var img = new Image();
      * img.src = dataURL;
@@ -447,6 +447,16 @@ var Texture2D = cc.Class({
         this._image = element;
         if (CC_WECHATGAME || CC_QQPLAY || element.complete || element instanceof HTMLCanvasElement) {
             this.handleLoadedTexture();
+        }
+        else if(element instanceof HTMLVideoElement)
+        {
+            var self = this;
+            element.addEventListener('canplay', function () {
+                self.handleLoadedTexture();
+            });
+            element.addEventListener('error', function (err) {
+                cc.warnID(3119, err.message);
+            });
         }
         else {
             var self = this;

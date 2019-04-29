@@ -8164,31 +8164,39 @@ var Texture2D = (function (Texture$$1) {
   Texture2D.prototype.update = function update (options) {
     var gl = this._device._gl;
     var genMipmap = this._hasMipmap;
-
+    var updateInfo = genMipmap
     if (options) {
       if (options.width !== undefined) {
         this._width = options.width;
+        updateInfo = true
       }
       if (options.height !== undefined) {
         this._height = options.height;
+        updateInfo = true
       }
       if (options.anisotropy !== undefined) {
         this._anisotropy = options.anisotropy;
+        updateInfo = true
       }
       if (options.minFilter !== undefined) {
         this._minFilter = options.minFilter;
+        updateInfo = true
       }
       if (options.magFilter !== undefined) {
         this._magFilter = options.magFilter;
+        updateInfo = true
       }
       if (options.mipFilter !== undefined) {
         this._mipFilter = options.mipFilter;
+        updateInfo = true
       }
       if (options.wrapS !== undefined) {
         this._wrapS = options.wrapS;
+        updateInfo = true
       }
       if (options.wrapT !== undefined) {
         this._wrapT = options.wrapT;
+        updateInfo = true
       }
       if (options.format !== undefined) {
         this._format = options.format;
@@ -8202,6 +8210,7 @@ var Texture2D = (function (Texture$$1) {
       if (options.mipmap !== undefined) {
         this._hasMipmap = options.mipmap;
         genMipmap = options.mipmap;
+        updateInfo = true
       }
 
       if (options.images !== undefined) {
@@ -8227,7 +8236,8 @@ var Texture2D = (function (Texture$$1) {
       this._setMipmap(options.images, options.flipY, options.premultiplyAlpha);
     }
 
-    this._setTexInfo();
+    if(updateInfo == true)
+      this._setTexInfo();
 
     if (genMipmap) {
       gl.hint(gl.GENERATE_MIPMAP_HINT, gl.NICEST);
